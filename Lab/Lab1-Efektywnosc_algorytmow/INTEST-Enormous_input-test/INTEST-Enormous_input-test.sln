@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32811.315
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INTEST-Enormous_input-test", "INTEST-Enormous_input-test\INTEST-Enormous_input-test.csproj", "{AB005B53-252A-4EEA-9C44-FC2BD70108CD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB005B53-252A-4EEA-9C44-FC2BD70108CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB005B53-252A-4EEA-9C44-FC2BD70108CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB005B53-252A-4EEA-9C44-FC2BD70108CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB005B53-252A-4EEA-9C44-FC2BD70108CD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CEA1FF2-79C1-464A-8E41-B537C22EBE2B}
+	EndGlobalSection
+EndGlobal
