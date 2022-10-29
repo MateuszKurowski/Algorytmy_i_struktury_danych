@@ -1,23 +1,75 @@
 ﻿using System;
+using System.IO;
 
 namespace INTEST_Enormous_Input_Test
 {
     internal class Program
     {
+        static Stream ReadStream;
+        static int Idx, Size, BytesRead;
+        static byte[] Buffer;
+        public static void Initialze()
+        {
+            ReadStream = Console.OpenStandardInput();
+            Idx = BytesRead = 0;
+            Size = 1 << 17;
+            Buffer = new byte[Size];
+        }
+        public static int ReadInt()
+        {
+            byte _ReadByte;
+            //For trimming
+            do
+            {
+                _ReadByte = ReadByte();
+            }
+            while (_ReadByte < '-');
+            bool neg = false;
+            //Checking sign of number
+            if (_ReadByte == '-')
+            {
+                neg = true;
+                _ReadByte = ReadByte();
+            }
+            int m = _ReadByte - '0';
+            while (true)
+            {
+                _ReadByte = ReadByte();
+                if (_ReadByte < '0') break;
+                m = m * 10 + (_ReadByte - '0');
+            }
+            if (neg) return -m;
+            return m;
+        }
+        private static void ReadConsoleInput()
+        {
+            Idx = 0;
+            BytesRead = ReadStream.Read(Buffer, 0, Size);
+            if (BytesRead <= 0) Buffer[0] = 32;
+        }
+        private static byte ReadByte()
+        {
+            if (Idx == BytesRead) ReadConsoleInput();
+            return Buffer[Idx++];
+        }
+        public static void Dispose()
+        {
+            ReadStream.Close();
+        }
         static void Main(string[] args)
         {
-            var firstInputArray = Console.ReadLine().Split(' ');
-            var n = int.Parse(firstInputArray[0]);
-            var k = int.Parse(firstInputArray[1]);
-            var result = 0;
-
-            for (int i = 0; i < n; i++)
+            Initialze();
+            int n, d, m, count = 0;
+            m = ReadInt();
+            d = ReadInt();
+            while (m-- > 0)
             {
-                var t = int.Parse(Console.ReadLine());
-                if (t % k == 0)
-                    result++;
+                n = ReadInt();
+                if (n % d == 0)
+                    count++;
             }
-            Console.WriteLine(result);
+            Dispose();
+            Console.WriteLine(count);
         }
     }
 }
