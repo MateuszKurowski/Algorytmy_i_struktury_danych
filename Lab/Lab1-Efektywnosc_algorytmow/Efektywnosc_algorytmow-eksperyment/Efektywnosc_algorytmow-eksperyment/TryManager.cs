@@ -25,7 +25,7 @@ namespace Efektywnosc_algorytmow_eksperyment
             var quickSortClassicalTimes = new TimeOfExecuteManager(SortAlgorithm.QuickSortClassicial, array);
             var quickSortTimes = new TimeOfExecuteManager(SortAlgorithm.QuickSort, array);
 
-            _sb.Append($"Przypadek {Cases}: próba {(arrayType == Arrays.SmallArray ? "mała" : arrayType == Arrays.MediumArray ? "średnia" : "duża")} (n = {(arrayType == Arrays.SmallArray ? "10" : arrayType == Arrays.MediumArray ? "1000" : "100000")}, {(sortType == SortType.Random ? "random" : sortType == SortType.Sorted ? "sorted" : sortType == SortType.Reversed ? "reversed" : sortType == SortType.AlmostSorted ? "almost sorted" : "few unique")}{Environment.NewLine}");
+            _sb.Append($"Przypadek {Cases}: próba {(arrayType == Arrays.SmallArray ? "mała" : arrayType == Arrays.MediumArray ? "średnia" : "duża")} (n = {(arrayType == Arrays.SmallArray ? "10" : arrayType == Arrays.MediumArray ? "1000" : "100000")}), {(sortType == SortType.Random ? "random" : sortType == SortType.Sorted ? "sorted" : sortType == SortType.Reversed ? "reversed" : sortType == SortType.AlmostSorted ? "almost sorted" : "few unique")}{Environment.NewLine}");
             _sb.Append($"* InsertionSort: t = {insertionSortTimes.AverageTime} +/- {insertionSortTimes.StandardDeviation}{Environment.NewLine}");
             _sb.Append($"* MergeSort: t = {mergeSortTimes.AverageTime} +/- {mergeSortTimes.StandardDeviation}{Environment.NewLine}");
             _sb.Append($"* QuickSortClassical: t = {quickSortClassicalTimes.AverageTime} +/- {quickSortClassicalTimes.StandardDeviation}{Environment.NewLine}");
@@ -35,6 +35,7 @@ namespace Efektywnosc_algorytmow_eksperyment
 
         public override string ToString()
         {
+            Console.OutputEncoding = Encoding.UTF8;
             return _sb.ToString();
         }
 

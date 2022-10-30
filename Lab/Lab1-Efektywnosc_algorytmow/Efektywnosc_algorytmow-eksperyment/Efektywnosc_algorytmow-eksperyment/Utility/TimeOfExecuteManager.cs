@@ -25,21 +25,28 @@ namespace Efektywnosc_algorytmow_eksperyment
                         stopwatch.Start();
                         InsertionSort.Sort(array);
                         stopwatch.Stop();
-                        _times[i] = stopwatch.Elapsed.TotalSeconds;
+                        _times[i] = stopwatch.Elapsed.TotalMilliseconds;
                         stopwatch.Reset();
                         break;
                     case SortAlgorithm.QuickSortClassicial:
                         stopwatch.Start();
-                        QuickSortClassical.Sort(array);
+                        QuickSortClassical.Sort(array, 0, array.Length - 1);
                         stopwatch.Stop();
-                        _times[i] = stopwatch.Elapsed.TotalSeconds;
+                        _times[i] = stopwatch.Elapsed.TotalMilliseconds;
                         stopwatch.Reset();
                         break;
                     case SortAlgorithm.MergeSort:
                         stopwatch.Start();
-                        MergeSort.Sort(array);
+                        MergeSort.Sort(array, 0, array.Length - 1);
                         stopwatch.Stop();
-                        _times[i] = stopwatch.Elapsed.TotalSeconds;
+                        _times[i] = stopwatch.Elapsed.TotalMilliseconds;
+                        stopwatch.Reset();
+                        break;
+                    case SortAlgorithm.QuickSort:
+                        stopwatch.Start();
+                        Array.Sort(array);
+                        stopwatch.Stop();
+                        _times[i] = stopwatch.Elapsed.TotalMilliseconds;
                         stopwatch.Reset();
                         break;
                 }
