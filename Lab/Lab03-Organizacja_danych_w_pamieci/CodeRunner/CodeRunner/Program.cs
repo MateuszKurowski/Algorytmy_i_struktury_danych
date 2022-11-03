@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security;
 using System.Security.Cryptography;
 
 namespace CodeRunner
@@ -8,9 +9,9 @@ namespace CodeRunner
     {
         static void Main(string[] args)
         {
-            var head = CreateSingleLinkedList<int>(1);
+            var head = CreateSingleLinkedList<int>(1, 2, 3, 4, 5, 6);
             PrintSingleLinkedList<int>(head);
-            MoveLastNodeToFront<int>(ref head);
+            RemoveNodeAt<int>(6, ref head);
             PrintSingleLinkedList<int>(head);
         }
 
@@ -23,6 +24,32 @@ namespace CodeRunner
                 Data = data; Next = next;
             }
             public override string ToString() => (this == null) ? "null" : $"{Data} -> ";
+        }
+
+        public static void RemoveNodeAt<T>(int position, ref Node<T> head)
+        {
+            if (head == null || head.Next == null)
+                return;
+            if (position == 0)
+            {
+                head = head.Next;
+                return;
+            }
+
+            var currentNode = head;
+            Node<T> previousNode = null;
+
+            for (int i = 0; i < position; i++)
+            {
+                previousNode = currentNode;
+                currentNode = currentNode.Next;
+            }
+            if (currentNode == null)
+            {
+                previousNode.Next = null;
+                return;
+            }
+            previousNode.Next = currentNode.Next;
         }
 
         public static void MoveLastNodeToFront<T>(ref Node<T> head)
