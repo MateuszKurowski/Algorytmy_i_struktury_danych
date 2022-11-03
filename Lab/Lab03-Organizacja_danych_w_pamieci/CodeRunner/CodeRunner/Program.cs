@@ -8,9 +8,10 @@ namespace CodeRunner
     {
         static void Main(string[] args)
         {
-            var head = CreateSingleLinkedList<int>(new int[] { 1, 2, 3, 4 });
+            var head = CreateSingleLinkedList<int>(1);
             PrintSingleLinkedList<int>(head);
-            PrintSingleLinkedList<int>(ReverseSingleLinkedList<int>(head));
+            MoveLastNodeToFront<int>(ref head);
+            PrintSingleLinkedList<int>(head);
         }
 
         public class Node<T>
@@ -22,6 +23,24 @@ namespace CodeRunner
                 Data = data; Next = next;
             }
             public override string ToString() => (this == null) ? "null" : $"{Data} -> ";
+        }
+
+        public static void MoveLastNodeToFront<T>(ref Node<T> head)
+        {
+            if (head == null || head.Next == null)
+                return;
+
+            var currentNode = head;
+            Node<T> previousNode = null;
+
+            while(currentNode.Next != null)
+            {
+                previousNode = currentNode;
+                currentNode = currentNode.Next;
+            }
+            previousNode.Next = null;
+            currentNode.Next = head;
+            head = currentNode;
         }
 
         public static Node<T> ReverseSingleLinkedList<T>(Node<T> head)
