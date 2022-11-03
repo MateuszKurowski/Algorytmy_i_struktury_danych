@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace CodeRunner
@@ -7,11 +8,7 @@ namespace CodeRunner
     {
         static void Main(string[] args)
         {
-            Node<int> head1 =
-   new Node<int>(2,
-     new Node<int>(5,
-       new Node<int>(1)));
-            PrintSingleLinkedList<int>(head1);
+            
         }
 
         public class Node<T>
@@ -23,6 +20,24 @@ namespace CodeRunner
                 Data = data; Next = next;
             }
             public override string ToString() => (this == null) ? "null" : $"{Data} -> ";
+        }
+
+        public static void AddAtEndOfSingleLinkedList<T>(T element, ref Node<T> head)
+        {
+            if (head == null)
+            {
+                var newHead = new Node<T>(element);
+                head = newHead;
+                return;
+            }
+
+            var node = head;
+            while (node.Next != null)
+            {
+                node = node.Next;
+            }
+            var newNode = new Node<T> (element);
+            node.Next = newNode;
         }
 
         public static void PrintSingleLinkedList<T>(Node<T> head)
@@ -39,12 +54,17 @@ namespace CodeRunner
 
             while (true)
             {
-                if (node.Next == null)
+                if (node == null)
                 {
                     result += "null";
                     break;
                 }
                 result += node.ToString();
+                if (node.Next == null)
+                {
+                    result += "null";
+                    break;
+                }
                 node = node.Next;
             }
             Console.WriteLine(result);
