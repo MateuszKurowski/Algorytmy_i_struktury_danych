@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Net.Http.Headers;
-using System.Text;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace CodeRunner
 {
@@ -10,6 +10,7 @@ namespace CodeRunner
         {
             var head = CreateSingleLinkedList<int>(new int[] { 1, 2, 3, 4 });
             PrintSingleLinkedList<int>(head);
+            PrintSingleLinkedList<int>(ReverseSingleLinkedList<int>(head));
         }
 
         public class Node<T>
@@ -21,6 +22,37 @@ namespace CodeRunner
                 Data = data; Next = next;
             }
             public override string ToString() => (this == null) ? "null" : $"{Data} -> ";
+        }
+
+        public static Node<T> ReverseSingleLinkedList<T>(Node<T> head)
+        {
+            if (head == null)
+                return null;
+
+            Node<T> node = head;
+
+            var index = 1;
+            while(node.Next != null)
+            {
+                index++;
+                node = node.Next;
+            }
+            var listOfData = new T[index];
+            node = head;
+            for (int i = 0; i < index; i++)
+            {
+                listOfData[i] = node.Data;
+                node = node.Next;
+            }
+
+            node = head;
+            for (int i = index - 1; i >= 0 ; i--)
+            {
+                node.Data = listOfData[i];
+                if (node.Next != null)
+                    node = node.Next;
+            }
+            return head;
         }
 
         public static Node<T> CreateSingleLinkedList<T>(params T[] arr)
