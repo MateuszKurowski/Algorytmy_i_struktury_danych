@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Security;
 using System.Security.Cryptography;
 
+using static CodeRunner.Program;
+
 namespace CodeRunner
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            var head = CreateSingleLinkedList<int>(1, 2, 3, 4, 5, 6);
+
+            var head = CreateSingleLinkedList<int>(1, 1, 2, 2, 2, 5, 6);
             PrintSingleLinkedList<int>(head);
-            RemoveNodeAt<int>(6, ref head);
+            RemoveAllDuplicatesFromSortedLinkedList<int>(ref head);
             PrintSingleLinkedList<int>(head);
         }
 
@@ -24,6 +27,50 @@ namespace CodeRunner
                 Data = data; Next = next;
             }
             public override string ToString() => (this == null) ? "null" : $"{Data} -> ";
+        }
+
+        public static void RemoveAllDuplicatesFromSortedLinkedList<T>(ref Node<T> head)
+    where T : IEquatable<T>, IComparable<T>
+        {
+            if (head == null || head.Next == null)
+                return;
+
+            Node<T> node = null;
+            while (head.Next != null && head.Data.CompareTo(head.Next.Data) == 0)
+            {
+                node = head.Next.Next;
+                if (node == null)
+                {
+                    head = null;
+                    return;
+                }
+                while (head.Data.CompareTo(node.Data) == 0)
+                {
+                    node = node.Next;
+                }
+                head = node;
+            }
+            node = head.Next;
+            if (node == null)
+                return;
+            Node<T> lastNode = head;
+            while (node.Next != null)
+            {
+                if (node.Data.CompareTo(node.Next.Data) == 0)
+                {
+                    while (node.Data.CompareTo(node.Next.Data) == 0)
+                    {
+                        node = node.Next;
+                    }
+                    lastNode.Next = node.Next;
+                    node = node.Next;
+                }
+                else
+                {
+                    lastNode = node;
+                    node = lastNode.Next;
+                }
+            }
         }
 
         public static void RemoveNodeAt<T>(int position, ref Node<T> head)
