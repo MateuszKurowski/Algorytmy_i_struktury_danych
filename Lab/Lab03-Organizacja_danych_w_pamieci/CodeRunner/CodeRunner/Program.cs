@@ -8,7 +8,8 @@ namespace CodeRunner
     {
         static void Main(string[] args)
         {
-            
+            var head = CreateSingleLinkedList<int>(new int[] { 1, 2, 3, 4 });
+            PrintSingleLinkedList<int>(head);
         }
 
         public class Node<T>
@@ -20,6 +21,26 @@ namespace CodeRunner
                 Data = data; Next = next;
             }
             public override string ToString() => (this == null) ? "null" : $"{Data} -> ";
+        }
+
+        public static Node<T> CreateSingleLinkedList<T>(params T[] arr)
+        {
+            if (arr == null || arr.Length < 1)
+                return null;
+
+            var head = new Node<T>(arr[0], null);
+            Node<T> lastNode = null;
+
+            for (int i = 1; i < arr.Length; i++)
+            {
+                var newNode = new Node<T>(arr[i], null);
+                if (i == 1)
+                    head.Next = newNode;
+                else lastNode.Next = newNode;
+                lastNode = newNode;
+            }
+
+            return head;
         }
 
         public static void AddAtEndOfSingleLinkedList<T>(T element, ref Node<T> head)
