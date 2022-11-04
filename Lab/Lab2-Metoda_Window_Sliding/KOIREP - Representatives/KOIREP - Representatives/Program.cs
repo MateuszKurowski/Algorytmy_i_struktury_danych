@@ -8,50 +8,109 @@ public class Test
     {
         var N = FastIO.ReadNonNegativeInt();
         var M = FastIO.ReadNonNegativeInt();
+        //const int N = 4;
+        //const int M = 3;
 
-        var arrayOfStudents = new (int studentClass, int power)[M * N];
+        var arrayOfStudents = new int[N][];
+        //var arrayOfStudents = new int[N][]
+        //{
+        //new int[M]
+        //{
+        //    10, 20, 30
+        //},
+        //new int[M]
+        //{
+        //    40, 50, 60
+        //},
+        //new int[M]
+        //{
+        //    70, 80, 90
+        //},
+        //new int[M]
+        //{
+        //    100, 110, 120
+        //},
+        //
+        //////
+        //
+        //new int[M]
+        //{
+        //    12, 16, 67, 43
+        //},
+        //new int[M]
+        //{
+        //    7, 17, 68, 48
+        //},
+        //new int[M]
+        //{
+        //    14, 15, 77, 54
+        //},
+        //
+        ///////
+        //
+        //    new int[M]
+        //    {
+        //        100, 110, 120
+        //    },
+        //    new int[M]
+        //    {
+        //        70, 80, 90
+        //    },
+        //    new int[M]
+        //    {
+        //        40, 50, 60
+        //    },
+        //    new int[M]
+        //    {
+        //        10, 20, 30
+        //    },
+        //};
 
-        var index = 0;
         for (int i = 0; i < N; i++)
         {
+            var tempArray = new int[M];
             for (int j = 0; j < M; j++)
             {
-                arrayOfStudents[index] = (i, FastIO.ReadNonNegativeInt());
-                index++;
+                tempArray[j] = FastIO.ReadNonNegativeInt();
             }
+            Array.Sort(tempArray);
+            arrayOfStudents[i] = tempArray;
         }
-        Array.Sort(arrayOfStudents, (x, y) => x.power.CompareTo(y.power));
 
         var indexes = new int[N];
         Array.Clear(indexes, 0, indexes.Length);
         var choosenStudents = new int[N];
-        int min = 0;
-        int max = 0;
-        int result = 0;
         for (int i = 0; i < N; i++)
         {
-            choosenStudents[i] = Array.Find(arrayOfStudents, x => x.studentClass == i).power;
+            choosenStudents[i] = arrayOfStudents[i][0];
         }
         Array.Sort(choosenStudents);
-        min = choosenStudents[0];
-        max = choosenStudents[N - 1];
-        result = max - min;
-        var tempResult = result;
+        int min = choosenStudents[0];
+        int max = choosenStudents[N - 1];
+        int result = max - min;
+        var nextIndex = 0;
 
-        for (int i = 0; i < arrayOfStudents.Length - 3; i++)
+        for (int i = 0; i < N * M - 3; i++)
         {
-            var nextIndex = Array.Find(arrayOfStudents, x => x.power == min).studentClass;
-            indexes[nextIndex]++;
+            for (int j = 0; j < choosenStudents.Length; j++)
+            {
+                if (arrayOfStudents[j][indexes[j]] == min)
+                {
+                    nextIndex = j;
+                    indexes[nextIndex]++;
+                    break;
+                }
+            }
 
             if (indexes[nextIndex] >= M)
                 break;
 
-            choosenStudents[Array.IndexOf(choosenStudents, min)] = Array.FindAll(arrayOfStudents, x => x.studentClass == nextIndex)[indexes[nextIndex]].power;
+            choosenStudents[Array.IndexOf(choosenStudents, min)] = arrayOfStudents[nextIndex][indexes[nextIndex]];
             Array.Sort(choosenStudents);
 
             min = choosenStudents[0];
             max = choosenStudents[N - 1];
-            tempResult = max - min;
+            int tempResult = max - min;
 
             if (tempResult < result)
                 result = tempResult;
