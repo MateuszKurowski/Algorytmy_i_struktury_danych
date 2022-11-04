@@ -11,10 +11,9 @@ namespace CodeRunner
     {
         static void Main(string[] args)
         {
-
             var head = CreateSingleLinkedList<int>(1, 1, 2, 2, 2, 5, 6);
             PrintSingleLinkedList<int>(head);
-            RemoveAllDuplicatesFromSortedLinkedList<int>(ref head);
+            DistinctElementsInLinkedList<int>(ref head);
             PrintSingleLinkedList<int>(head);
         }
 
@@ -27,6 +26,35 @@ namespace CodeRunner
                 Data = data; Next = next;
             }
             public override string ToString() => (this == null) ? "null" : $"{Data} -> ";
+        }
+
+        public static void DistinctElementsInLinkedList<T>(ref Node<T> head)
+    where T : IEquatable<T>, IComparable<T>
+        {
+            if (head == null || head.Next == null)
+                return;
+
+            Node<T> currentNode = head;
+            Node<T> targetNode = head;
+            while (targetNode.Next != null)
+            {
+                currentNode= targetNode;
+                while (currentNode.Next != null)
+                {
+                     if (targetNode.Data.CompareTo(currentNode.Next.Data) == 0)
+                     {
+                        if (currentNode.Next.Next == null)
+                        {
+                            currentNode.Next = null;
+                            break;
+                        }
+                        else currentNode.Next = currentNode.Next.Next;
+                    }
+                    else currentNode = currentNode.Next;
+                }
+                if (targetNode.Next == null) break;
+                targetNode = targetNode.Next;
+            }
         }
 
         public static void RemoveAllDuplicatesFromSortedLinkedList<T>(ref Node<T> head)
