@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.Text;
 
@@ -6,115 +8,62 @@ public class Test
 {
     public static void Main()
     {
-        var N = FastIO.ReadNonNegativeInt();
-        var M = FastIO.ReadNonNegativeInt();
-        //const int N = 4;
-        //const int M = 3;
+        var firstLine = FastIO.ReadASCIIString();
+        var firstLineArray = Array.ConvertAll(firstLine.Split(' ', StringSplitOptions.RemoveEmptyEntries), s => Convert.ToInt32(s));
 
-        var arrayOfStudents = new int[N][];
-        //var arrayOfStudents = new int[N][]
-        //{
-        //new int[M]
-        //{
-        //    10, 20, 30
-        //},
-        //new int[M]
-        //{
-        //    40, 50, 60
-        //},
-        //new int[M]
-        //{
-        //    70, 80, 90
-        //},
-        //new int[M]
-        //{
-        //    100, 110, 120
-        //},
-        //
-        //////
-        //
-        //new int[M]
-        //{
-        //    12, 16, 67, 43
-        //},
-        //new int[M]
-        //{
-        //    7, 17, 68, 48
-        //},
-        //new int[M]
-        //{
-        //    14, 15, 77, 54
-        //},
-        //
-        ///////
-        //
-        //    new int[M]
-        //    {
-        //        100, 110, 120
-        //    },
-        //    new int[M]
-        //    {
-        //        70, 80, 90
-        //    },
-        //    new int[M]
-        //    {
-        //        40, 50, 60
-        //    },
-        //    new int[M]
-        //    {
-        //        10, 20, 30
-        //    },
-        //};
+        var N = firstLineArray[0];
+        var M = firstLineArray[1];
 
-        for (int i = 0; i < N; i++)
+        var listOfStudents = new List<(int studentClass, int power)>();
+
+        for (var i = 0; i < N; i++)
         {
-            var tempArray = new int[M];
-            for (int j = 0; j < M; j++)
+            for (var j = 0; j < M; j++)
             {
-                tempArray[j] = FastIO.ReadNonNegativeInt();
+                listOfStudents.Add((i, FastIO.ReadNonNegativeInt()));
             }
-            Array.Sort(tempArray);
-            arrayOfStudents[i] = tempArray;
+        }
+        listOfStudents = listOfStudents.OrderBy(x => x.power).ToList();
+
+        var usedClasses = new int[N];
+        var result = int.MaxValue;
+        var classesToUse = N;
+        var l = 0;
+        var r = N - 1;
+
+        for (var i = 0; i <= r; i++)
+        {
+            var currentClass = listOfStudents[i].studentClass;
+            if (usedClasses[currentClass] == 0)
+                classesToUse--;
+            usedClasses[currentClass]++;
         }
 
-        var indexes = new int[N];
-        Array.Clear(indexes, 0, indexes.Length);
-        var choosenStudents = new int[N];
-        for (int i = 0; i < N; i++)
+        while (true)
         {
-            choosenStudents[i] = arrayOfStudents[i][0];
-        }
-        Array.Sort(choosenStudents);
-        int min = choosenStudents[0];
-        int max = choosenStudents[N - 1];
-        int result = max - min;
-        var nextIndex = 0;
+            if (classesToUse == 0)
+                result = Math.Min(result, listOfStudents[r].power - listOfStudents[l].power);
 
-        for (int i = 0; i < N * M - 3; i++)
-        {
-            for (int j = 0; j < choosenStudents.Length; j++)
+            if (classesToUse != 0 && r < listOfStudents.Count - 1)
             {
-                if (arrayOfStudents[j][indexes[j]] == min)
-                {
-                    nextIndex = j;
-                    indexes[nextIndex]++;
+                r++;
+                var currentClass = listOfStudents[r].studentClass;
+                if (usedClasses[currentClass] == 0)
+                    classesToUse--;
+                usedClasses[currentClass]++;
+            }
+            else
+            {
+                var currentClass = listOfStudents[l].studentClass;
+                usedClasses[currentClass]--;
+                if (usedClasses[currentClass] == 0)
+                    classesToUse++;
+                l++;
+                if (r - l < N - 2)
                     break;
-                }
             }
-
-            if (indexes[nextIndex] >= M)
-                break;
-
-            choosenStudents[Array.IndexOf(choosenStudents, min)] = arrayOfStudents[nextIndex][indexes[nextIndex]];
-            Array.Sort(choosenStudents);
-
-            min = choosenStudents[0];
-            max = choosenStudents[N - 1];
-            int tempResult = max - min;
-
-            if (tempResult < result)
-                result = tempResult;
         }
+
         FastIO.WriteNonNegativeInt(result);
         FastIO.Flush();
     }
