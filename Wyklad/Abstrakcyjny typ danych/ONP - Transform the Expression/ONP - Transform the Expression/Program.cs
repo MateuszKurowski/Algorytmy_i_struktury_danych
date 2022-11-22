@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -6,29 +7,39 @@ public class Test
 {
     public static void Main()
     {
-        var N = FastIO.ReadNonNegativeInt();
+        int count = FastIO.ReadNonNegativeInt();
 
-        var a = new int[N];
-        var result = 0;
-
-        var golems = new int[N];
-        for (var i = 0; i < N; i++)
-            golems[i] = FastIO.ReadNonNegativeInt();
-
-        if (N == 1)
+        for (int i = 0; i < count; i++)
         {
-            FastIO.WriteASCIIString("1");
-            return;
+            var stack = new Stack<char>();
+            var result = new StringBuilder();
+            var input = FastIO.ReadASCIIString();
+            for (int j = 0; j < input.Length; j++)
+            {
+                char c = input[j];
+
+                switch (c)
+                {
+                    case '(':
+                        break;
+                    case '+':
+                    case '-':
+                    case '*':
+                    case '/':
+                    case '^':
+                        stack.Push(c);
+                        break;
+                    case ')':
+                        result.Append(stack.Peek());
+                        stack.Pop();
+                        break;
+                    default:
+                        result.Append(c);
+                        break;
+                }
+            }
+            FastIO.WriteLineASCIIString(result.ToString());
         }
-
-        for (var i = 2; i < N; i++)
-            for (var j = 2; i * j < N; i++)
-                a[i * j] = 1;
-
-        if (result == 0)
-            FastIO.WriteASCIIString("-1");
-        else
-            FastIO.WriteASCIIString($"{result}");
     }
 
     public static class FastIO
