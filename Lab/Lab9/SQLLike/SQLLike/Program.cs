@@ -8,6 +8,7 @@ namespace SQLLike
         {
             Console.WriteLine("Adam".SQLike("A%a") == false);
             Console.WriteLine("Agnieszka".SQLike("A%a") == true);
+            Console.WriteLine();
 
             Test(false, "A%a", "Adam");
             Test(true, "A%a", "Agnieszka");
@@ -16,11 +17,15 @@ namespace SQLLike
             Test(false, "%_a", "a");
             Test(true, "%", "alab");
 
+            Console.WriteLine();
+
             Test(true, "", "");
             Test(false, "", "a");
             Test(false, "a", "");
             Test(false, "_", "");
             Test(true, "%", "");
+
+            Console.WriteLine();
 
             Test(true, "_", "a");
             Test(false, "_", "aa");
@@ -35,6 +40,8 @@ namespace SQLLike
             Test(true, "%_", "aaa");
             Test(false, "%_", "");
 
+            Console.WriteLine();
+
             Test(true, "%%%ba%%ab", "baaabab");
             Test(false, "_%%ba%%ab", "baaabab");
             Test(false, "%_%ba%%ab", "baaabab");
@@ -42,6 +49,10 @@ namespace SQLLike
             Test(false, "baabab", "baaabab");
             Test(false, "baaabab", "baabab");
             Test(true, "%b%b", "baaabab");
+
+            Console.WriteLine();
+
+
         }
 
         private static void Test(bool expected, string pattern, string text)
@@ -128,6 +139,15 @@ namespace SQLLike
                                     return true;
                                 textIndex++;
                             }
+
+                        var others = pattern.Substring(patternIndex + 1);
+                        if (!others.Contains('_')
+                            && !others.Contains('%'))
+                        {
+                            var otherText = text.Substring(textIndex + 1);
+                            if (otherText.Contains(others))
+                                return true;
+                        }
 
                         textIndex = text.IndexOf(pattern[patternIndex + 1], textIndex);
                         continue;
